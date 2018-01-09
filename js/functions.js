@@ -1,19 +1,26 @@
 document.onkeydown = function(e) {
-	let elem = document.getElementById('audio-container');
+	let mapper = require('../data/json/mapper.json');
+	let audioContainer = document.getElementById('audio-container');
 	let basePath = 'data/sounds/';
-	switch (e.keyCode) {
-		case 65:
-			elem.setAttribute('src',basePath+"A.mp3");
-			break;
-		case 81:
-			elem.setAttribute('src',basePath+"Q.mp3");
-			break;
-		default:
-			elem.removeAttribute('src');
-			console.log("Key is not found!", e.keyCode);
-	};
+	let extension = '.mp3';
 
-	if (elem.hasAttribute('src')) {
-		elem.play();
+	if (mapper[e.keyCode]) {
+		let alphabet = mapper[e.keyCode];
+		audioContainer.setAttribute('src', basePath + alphabet + extension);
+		displayAlphabet(alphabet);
+	} else {
+		audioContainer.removeAttribute('src');
+		console.log("Key is not found!", e.keyCode);
+	}
+
+	if (audioContainer.hasAttribute('src')) {
+		audioContainer.play();
 	}
 };
+
+
+function displayAlphabet (alphabet) {
+	let alphabetContainer = document.getElementById('alphabet-container');
+	let staticText = 'Displaying alphabet ~ ';
+	alphabetContainer.innerHTML = staticText + alphabet;
+}
